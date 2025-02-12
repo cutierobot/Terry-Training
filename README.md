@@ -71,9 +71,9 @@ validation, Result pattern)
     a. Create Controller folder<br/>
        i. Create controllers for endpoints<br/>
            1. Use services<br/>
-   ii. Setup Program.cs<br/>
-      1. Setup database<br/>
-      2. Automatic migration<br/>
-      3. Dependency Injection<br/>
-      4. AutoMapper<br/>
+       ii. Setup Program.cs<br/>
+          1. Setup database<br/>
+          2. Automatic migration<br/>
+          3. Dependency Injection<br/>
+          4. AutoMapper<br/>
   b. Create Exception handling middleware<br/>
