@@ -17,7 +17,8 @@ public class TerryDbContext: DbContext
                 modelBuilder.Entity<Customer>()
                     .HasKey(customer => customer.Id)
                     .HasName("PK_Customer");
-            
+                
+                
                 // Completed from bool to bit
                 modelBuilder.Entity<Order>()
                     .Property(order => order.Completed)
@@ -28,11 +29,11 @@ public class TerryDbContext: DbContext
                     .HasKey(order => order.Id)
                     .HasName("PK_Order");
                 
-                // @Terry same here
+                
                 modelBuilder.Entity<Order>()
-                    .HasMany(orderLine => orderLine.CustomerId)
-                    .WithOne(customer => customer.Id)
-                    .HasForeignKey("CustomerId");
+                    .HasOne<Customer>(order => order.Customer)
+                    .WithMany(customer => customer.Orders)
+                    .HasForeignKey(order => order.CustomerId);
                 
                 modelBuilder.Entity<Product>()
                     .HasKey(product => product.Id)
@@ -44,16 +45,16 @@ public class TerryDbContext: DbContext
                 
                 // @Terry: Pretty sure this is not done right. Everywhere seems to think I need to include Order as a column
                 // like here https://learn.microsoft.com/en-us/ef/core/modeling/relationships, but not to sure as OrderLine is meant to be the exact replica of db OrderLine
+                // See Issue #2 for resolution
                 modelBuilder.Entity<OrderLine>()
-                    .HasMany(orderLine => orderLine.OrderId)
-                    .WithOne(order => order.Id)
-                    .HasForeignKey("OrderId");
+                    .HasOne<Order>(orderLine => orderLine.Order)
+                    .WithMany(order => order.OrderLines)
+                    .HasForeignKey(order => order.OrderId);
                 
-                // @Terry same here
                 modelBuilder.Entity<OrderLine>()
-                    .HasMany(orderLine => orderLine.ProductId)
-                    .WithOne(product => product.Id)
-                    .HasForeignKey("ProductId");
+                    .HasOne<Product>(orderLine => orderLine.Product)
+                    .WithMany(product => product.OrderLines)
+                    .HasForeignKey(orderLine => orderLine.ProductId);
                 
             base.OnModelCreating(modelBuilder);
 

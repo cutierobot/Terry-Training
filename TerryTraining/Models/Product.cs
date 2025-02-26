@@ -10,4 +10,6 @@ public class Product
     public string Description { get; set; }
     public int Stock { get; set; }
     public int Reserved { get; set; }
+    
+    public ICollection<OrderLine> OrderLines { get; }
 }
