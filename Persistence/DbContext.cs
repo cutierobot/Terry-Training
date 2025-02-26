@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TerryTraining.Models;
+using Persistence.Models;
 
-namespace TerryTraining;
+namespace Persistence;
 
 public class TerryDbContext: DbContext
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TerryTraining.Models;
+namespace Persistence.Models;
 
 public class Order
 {
