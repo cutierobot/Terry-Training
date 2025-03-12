@@ -42,35 +42,35 @@ validation, Result pattern)
 - API (exception middleware)
 
 ## APPROACH
-1. Create Persistence project (C# Class library)<br/>
-    a. Create folder Models and create the four database models from diagram<br/>
+1. Create _**Persistence project**_ (C# Class library)<br/>
+    a. Create folder _Models_ and create the four database models from diagram<br/>
     b. Create DBContext<br/>
-2. Create Domain project (C# Class library)<br/>
-    a. Create folder Entities, then inside that OrderAggregate<br/>
-    b. In OrderAggregate, create Order and OrderLine classes<br/>
-    c. Create Product and Customer class (inside Entities folder)<br/>
-    d. Create ValueObjects folder and create Address class.<br/>
-    e. Create folder Interfaces, create folder Repository<br/>
+2. Create _**Domain project**_ (C# Class library)<br/>
+    a. Create folder _Entities_, then inside that _OrderAggregate_<br/>
+    b. In _OrderAggregate_, create _Order_ and _OrderLine_ classes<br/>
+    c. Create _Product_ and _Customer_ class (inside _Entities_ folder)<br/>
+    d. Create _ValueObjects_ folder and create _Address_ class.<br/>
+    e. Create folder _Interfaces_, create folder _Repository_<br/>
     f. Create repository interfaces<br/>
-3. Create Application project (C# Class library)<br/>
-    a. Create folder Interfaces, create IUnitOfWork interface<br/>
-4. Create UnitOfWork and Repositories in Persistence project<br/>
+3. Create _**Application project**_ (C# Class library)<br/>
+    a. Create folder _Interfaces_, create IUnitOfWork interface<br/>
+4. Create _UnitOfWork_ and _Repositories_ in _**Persistence project**_<br/>
     a. Use Automapper where possible<br/>
     b. Use DbContextFactory and generics for accessing repositories<br/>
-5. In Application project,<br/>
-    a. create Commands and Queries folders<br/>
+5. In _**Application**_ project,<br/>
+    a. create _Commands_ and _Queries_ folders<br/>
     b. Create command and query classes where applicable<br/>
-    c. Create DTO folder<br/>
+    c. Create _DTO_ folder<br/>
     d. Create DTO for return data where applicable (get order, get customer)<br/>
-    e. Create Result class<br/>
-    f. Create Interfaces folder<br/>
+    e. Create _Result_ class<br/>
+    f. Create _Interfaces_ folder<br/>
     g. Create service interfaces<br/>
     h. Implement services<br/>
     - i. Use Fluent validation<br/>
         ii. Use UnitOfWork when using repositories for updates<br/>
         iii. Set and return Result object<br/>
         iv. Use Mapping to go from Domain to DTO’s<br/>
-6. Create API project<br/>
+6. Create _**API project**_<br/>
     a. Create Controller folder<br/>
        i. Create controllers for endpoints<br/>
            1. Use services<br/>
