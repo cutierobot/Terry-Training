@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{ADC5C493-9D46-4ED8-A587-8FB0DEF67022}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{48DAA2FC-976F-44EE-8EA5-72836B2E9997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{E46595C5-1BB3-40E7-AE41-44A979ED5C30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{ADC5C493-9D46-4ED8-A587-8FB0DEF67022}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADC5C493-9D46-4ED8-A587-8FB0DEF67022}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADC5C493-9D46-4ED8-A587-8FB0DEF67022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48DAA2FC-976F-44EE-8EA5-72836B2E9997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48DAA2FC-976F-44EE-8EA5-72836B2E9997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48DAA2FC-976F-44EE-8EA5-72836B2E9997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48DAA2FC-976F-44EE-8EA5-72836B2E9997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E46595C5-1BB3-40E7-AE41-44A979ED5C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E46595C5-1BB3-40E7-AE41-44A979ED5C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E46595C5-1BB3-40E7-AE41-44A979ED5C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E46595C5-1BB3-40E7-AE41-44A979ED5C30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
