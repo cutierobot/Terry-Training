@@ -1,4 +1,4 @@
-namespace Domain.Entities;
+namespace TerryTraining.Domain.Entities;
 
 public class Customer
 {

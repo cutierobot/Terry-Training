@@ -1,16 +1,23 @@
 using Microsoft.EntityFrameworkCore;
-using Persistence.Models;
+using TerryTraining.Persistence.Models;
 
-namespace Persistence;
+namespace TerryTraining.Persistence;
 
 public class TerryDbContext: DbContext
 {
+    
+        public TerryDbContext(DbContextOptions<TerryDbContext> options) : base(options)
+        {
+            
+        }
+        
         // DbSet to represent the collection of books in our database
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<OrderLine> OrderLines { get; set; }
-        
+
+
          protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             

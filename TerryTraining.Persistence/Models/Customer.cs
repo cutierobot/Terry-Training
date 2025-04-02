@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Persistence.Models;
+namespace TerryTraining.Persistence.Models;
 
 public class Customer
 {

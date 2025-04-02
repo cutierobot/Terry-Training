@@ -1,4 +1,4 @@
-namespace Application.Interfaces;
+namespace TerryTraining.Application.Interfaces;
 
 public interface ITerryTrainingService
 {

@@ -1,11 +1,16 @@
+using TerryTraining.Application.Interfaces;
+using TerryTraining.Persistence;
 
-
-using Application.Interfaces;
-
-namespace Application.Services;
+namespace TerryTraining.Application.Services;
 
 public class TerryTrainingService: ITerryTrainingService
 {
+    private readonly TerryDbContext _context;
+
+    public TerryTrainingService(TerryDbContext context)
+    {
+        _context = context;
+    }
     public string NewProduct(string name, string description, int stockcount)
     {
         //  Check doesn’t already exist
