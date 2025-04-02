@@ -1,4 +1,6 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using TerryTraining.Application.Interfaces;
 using TerryTraining.Application.Services;
 using TerryTraining.Persistence;
@@ -8,15 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-// builder.Services.AddSwaggerGen(options =>
-//     {
-//         // using System.Reflection;
-//         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-//         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-//         options.SupportNonNullableReferenceTypes();
-//     }
-// );
+// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+    {
+        // using System.Reflection;
+        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+        options.SupportNonNullableReferenceTypes();
+    }
+);
 
 var app = builder.Build();
 
@@ -43,3 +45,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapGet("/quote/find{text}", async (string text, ITerryTrainingService terryTrainingService) =>
+    {
+        throw new NotImplementedException();
+    })
+    .WithName("FindQuotes")
+    .WithTags("Not Implemented")
+    .WithOpenApi(x => new OpenApiOperation(x)
+    {
+        Summary = "Find quotes matching provided text",
+        Description = "Retrieves a array of quotes matching provided text"
+    });
+
+app.Run();
