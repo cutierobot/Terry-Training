@@ -10,17 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
-builder.Services.AddSwaggerGen(options =>
-    {
-        // using System.Reflection;
-        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-        options.SupportNonNullableReferenceTypes();
-    }
-);
-
-var app = builder.Build();
+builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen(options =>
+//     {
+//         // using System.Reflection;
+//         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+//         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+//         options.SupportNonNullableReferenceTypes();
+//     }
+// );
 
 
 // TODO: don't store hardcoded password and stuff here in OrderDatabase connectionString be more secure
@@ -37,6 +35,10 @@ builder.Services.AddDbContext<TerryDbContext>(
 
 builder.Services.AddScoped<ITerryTrainingService, TerryTrainingService>();
 
+
+var app = builder.Build();
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -46,16 +48,34 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/quote/find{text}", async (string text, ITerryTrainingService terryTrainingService) =>
+// app.MapGet("/quote/find{text}", async (string text, ITerryTrainingService terryTrainingService) =>
+//     {
+//         throw new NotImplementedException();
+//     })
+//     .WithName("FindQuotes")
+//     .WithTags("Not Implemented")
+//     .WithOpenApi(x => new OpenApiOperation(x)
+//     {
+//         Summary = "Find quotes matching provided text",
+//         Description = "Retrieves a array of quotes matching provided text"
+//     });
+
+app.MapPut("/product/new", async (string name, string description, int stockcount, ITerryTrainingService terryTrainingService) =>
     {
-        throw new NotImplementedException();
+        var result = terryTrainingService.NewProduct(name, description, stockcount);
+        // throw new NotImplementedException();
     })
-    .WithName("FindQuotes")
+    .WithName("NewProduct")
     .WithTags("Not Implemented")
     .WithOpenApi(x => new OpenApiOperation(x)
     {
-        Summary = "Find quotes matching provided text",
-        Description = "Retrieves a array of quotes matching provided text"
+        Summary = "Create a new product",
+        Description = "Creates a new product, if it does not exist",
     });
+
+// Check doesn’t already exist
+// Check name, description sizes
+// Check stockcount > 0
+
 
 app.Run();
