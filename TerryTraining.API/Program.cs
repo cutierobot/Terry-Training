@@ -1,6 +1,9 @@
 using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using TerryTraining.API.Validation;
 using TerryTraining.Application.Interfaces;
 using TerryTraining.Application.Services;
 using TerryTraining.Persistence;
@@ -33,6 +36,10 @@ builder.Services.AddDbContext<TerryDbContext>(
         options.UseSqlServer(connectionString)
 );
 
+builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<ProductValidator>();
+
 builder.Services.AddScoped<ITerryTrainingService, TerryTrainingService>();
 
 
@@ -63,10 +70,11 @@ app.UseHttpsRedirection();
 app.MapPut("/product/new", async (string name, string description, int stockcount, ITerryTrainingService terryTrainingService) =>
     {
         var result = terryTrainingService.NewProduct(name, description, stockcount);
+         return result == null ? Results.NotFound() : Results.Created($"/product/{result.Id}", result);
         // throw new NotImplementedException();
     })
     .WithName("NewProduct")
-    .WithTags("Not Implemented")
+    // .WithTags("Not Implemented")
     .WithOpenApi(x => new OpenApiOperation(x)
     {
         Summary = "Create a new product",

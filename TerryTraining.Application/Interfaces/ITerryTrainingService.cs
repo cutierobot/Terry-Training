@@ -1,4 +1,5 @@
 using TerryTraining.Application.DTO;
+using TerryTraining.Persistence.Models;
 
 namespace TerryTraining.Application.Interfaces;
 
@@ -12,4 +13,6 @@ public interface ITerryTrainingService
     // add the other method definitions here
     
     Task<ProductDTO> GetProduct(int id);
+    // ----------------------------------------------------------------------------------------------------------------
+    void ValidateProduct(Product product); // FluentValidation
 }
