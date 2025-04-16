@@ -73,6 +73,18 @@ app.MapPut("/product/new", async (string name, string description, int stockcoun
         Description = "Creates a new product, if it does not exist",
     });
 
+app.MapGet("/product/{id}", async (int id, ITerryTrainingService terryTrainingService) =>
+    {
+        var result = await terryTrainingService.GetProduct(id);
+        return result == null ? Results.NotFound(): Results.Ok(result);
+    })
+    .WithName("GetProduct")
+    .WithOpenApi(x => new OpenApiOperation(x)
+    {
+        Summary = "Retrieve a product from it's Id",
+        Description = "Retrieves a product using it's db Id, this one is intended for testing connection if anything"
+    });
+
 // Check doesn’t already exist
 // Check name, description sizes
 // Check stockcount > 0

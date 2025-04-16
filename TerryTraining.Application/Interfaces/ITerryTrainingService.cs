@@ -10,4 +10,6 @@ public interface ITerryTrainingService
     // Task<bool> DoesProductExist(string name, string description);
     
     // add the other method definitions here
+    
+    Task<ProductDTO> GetProduct(int id);
 }

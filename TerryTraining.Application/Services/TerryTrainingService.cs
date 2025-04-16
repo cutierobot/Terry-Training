@@ -9,7 +9,7 @@ namespace TerryTraining.Application.Services;
 public class TerryTrainingService: ITerryTrainingService
 {
     private readonly TerryDbContext _context;
-    private ITerryTrainingService _terryTrainingServiceImplementation;
+    // private ITerryTrainingService _terryTrainingServiceImplementation;
 
     public TerryTrainingService(TerryDbContext context)
     {
@@ -37,7 +37,7 @@ public class TerryTrainingService: ITerryTrainingService
                 Reserved = 0
             };
             
-            await _context.Products.AddAsync(product);
+            await _context.Product.AddAsync(product);
             await _context.SaveChangesAsync();
             Console.WriteLine("Successfully added product");
 
@@ -57,6 +57,19 @@ public class TerryTrainingService: ITerryTrainingService
         }
     }
 
+    public async Task<ProductDTO> GetProduct(int id)
+    {
+        var result= await _context.Product.FirstAsync(product => product.Id == id);
+        return new ProductDTO
+        {
+            Id = result.Id,
+            Description = result.Description,
+            Name = result.Name,
+            Stock = result.Stock,
+            Reserved = result.Reserved
+        };
+    }
+
 
     
     /// <summary>
@@ -69,7 +82,7 @@ public class TerryTrainingService: ITerryTrainingService
     private async Task<int> DoesProductExist(string name, string description)
     {
         // Find the product by its name and return the ID or 0 if it doesn't exist
-        return await _context.Products
+        return await _context.Product
             .Where(product => product.Name == name && product.Description == description)
             .Select(product => product.Id) // get only ID column
             .FirstOrDefaultAsync(); // return ID, or 0 (as 0 is defualt for int)
