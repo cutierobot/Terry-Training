@@ -11,5 +11,5 @@ public class Order
     
     public Customer Customer { get; set; }
     
-    public ICollection<OrderLine> OrderLines { get; }
+    public virtual ICollection<OrderLine> OrderLines { get; }
 }

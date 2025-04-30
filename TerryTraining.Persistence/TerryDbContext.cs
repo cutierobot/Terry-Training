@@ -50,9 +50,6 @@ public class TerryDbContext: DbContext
                     .HasKey(orderLine => orderLine.Id)
                     .HasName("PK_OrderLine");
                 
-                // @Terry: Pretty sure this is not done right. Everywhere seems to think I need to include Order as a column
-                // like here https://learn.microsoft.com/en-us/ef/core/modeling/relationships, but not to sure as OrderLine is meant to be the exact replica of db OrderLine
-                // See Issue #2 for resolution
                 modelBuilder.Entity<OrderLine>()
                     .HasOne<Order>(orderLine => orderLine.Order)
                     .WithMany(order => order.OrderLines)

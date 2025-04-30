@@ -14,5 +14,5 @@ public class Customer
     public string PostCode { get; set; }
     public string Country { get; set; }
     
-    public ICollection<Order> Orders { get; }
+    public virtual ICollection<Order> Orders { get; }
 }

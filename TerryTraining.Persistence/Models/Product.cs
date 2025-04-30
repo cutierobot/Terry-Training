@@ -11,5 +11,5 @@ public class Product
     public int Stock { get; set; }
     public int Reserved { get; set; }
     
-    public ICollection<OrderLine> OrderLines { get; }
+    public virtual ICollection<OrderLine> OrderLines { get; }
 }
