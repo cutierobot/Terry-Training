@@ -12,7 +12,7 @@ public class TerryDbContext: DbContext
         }
         
         // DbSet to represent the collection of books in our database
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Domain.Entities.Product> Product { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<OrderLine> OrderLine { get; set; }

@@ -1,4 +1,5 @@
 using FluentValidation;
+using TerryTraining.Application.DTO;
 using TerryTraining.Persistence.Models;
 
 namespace TerryTraining.API.Validation;

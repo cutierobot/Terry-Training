@@ -6,12 +6,16 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\TerryTraining.Persistence\TerryTraining.Persistence.csproj" />
-    </ItemGroup>
+<!--    <ItemGroup>-->
+<!--      <ProjectReference Include="..\TerryTraining.Persistence\TerryTraining.Persistence.csproj" />-->
+<!--    </ItemGroup>-->
 
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.5.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TerryTraining.Domain\TerryTraining.Domain.csproj" />
     </ItemGroup>
 
 </Project>

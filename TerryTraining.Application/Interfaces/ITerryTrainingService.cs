@@ -1,13 +1,15 @@
 using TerryTraining.Application.DTO;
-using TerryTraining.Persistence.Models;
+using TerryTraining.Domain.Entities;
+// using TerryTraining.Persistence.Models;
 
 namespace TerryTraining.Application.Interfaces;
 
 public interface ITerryTrainingService
 {
     // returning string is only temp for testing
-    // string NewProÎduct(string name, string description, int stockcount);
-    Task<ProductDTO> NewProduct(string name, string description, int stockcount);
+    // string NewProduct(string name, string description, int stockCount);
+    // Task<ProductDTO> NewProduct(string name, string description, int stockCount);
+    Task<ProductDTO> NewProduct(ProductDTO product);
     // Task<bool> DoesProductExist(string name, string description);
     
     // add the other method definitions here

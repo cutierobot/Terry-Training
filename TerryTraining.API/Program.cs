@@ -4,9 +4,12 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TerryTraining.API.Validation;
+using TerryTraining.Application.DTO;
 using TerryTraining.Application.Interfaces;
 using TerryTraining.Application.Services;
+using TerryTraining.Domain.Interfaces;
 using TerryTraining.Persistence;
+using TerryTraining.Persistence.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +44,8 @@ builder.Services.AddFluentValidationAutoValidation()
     .AddValidatorsFromAssemblyContaining<ProductValidator>();
 
 builder.Services.AddScoped<ITerryTrainingService, TerryTrainingService>();
-
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
@@ -69,9 +73,17 @@ app.UseHttpsRedirection();
 
 app.MapPut("/product/new", async (string name, string description, int stockcount, ITerryTrainingService terryTrainingService) =>
     {
-        var result = terryTrainingService.NewProduct(name, description, stockcount);
+        // create ProductDTO here to send to NewProduct
+        var product = new ProductDTO
+            {
+                Description = description,
+                Name = name,
+                Stock = stockcount,
+                Reserved = 0 // default of DB is 0 anyway, but still force sending it as best practice
+            };
+        
+        var result = terryTrainingService.NewProduct(product);
          return result == null ? Results.NotFound() : Results.Created($"/product/{result.Id}", result);
-        // throw new NotImplementedException();
     })
     .WithName("NewProduct")
     // .WithTags("Not Implemented")

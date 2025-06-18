@@ -1,40 +1,50 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using TerryTraining.Application.DTO;
 using TerryTraining.Application.Interfaces;
-using TerryTraining.Persistence;
-using TerryTraining.Persistence.Models;
+using TerryTraining.Domain.Entities;
+
+// using TerryTraining.Persistence.Interfaces;
+// using TerryTraining.Persistence.Models;
 
 namespace TerryTraining.Application.Services;
 
+// service should only get DTO and send back DTO
+
 public class TerryTrainingService : ITerryTrainingService
 {
-    private readonly TerryDbContext _context;
+    // need to implement IUnitOfWork here now.
+    // private readonly TerryDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<Product> _productValidator;
     // private ITerryTrainingService _terryTrainingServiceImplementation;
 
-    public TerryTrainingService(TerryDbContext context, IValidator<Product> productValidator)
+    // public TerryTrainingService(TerryDbContext context, IValidator<Product> productValidator)
+    public TerryTrainingService(IUnitOfWork unitOfWork, IValidator<Product> productValidator)
     {
-        _context = context;
+        // _context = context;
+        _unitOfWork = unitOfWork;
         _productValidator = productValidator;
     }
 
-    public async Task<ProductDTO> NewProduct(string name, string description, int stockcount)
+    // public async Task<ProductDTO> NewProduct(string name, string description, int stockcount)
+    public async Task<ProductDTO> NewProduct(ProductDTO productDTO)
     {
         try
         {
+            // Call UnitOfWork here, which has the ProductRepository in it.
             var product = new Product
             {
-                Description = description,
-                Name = name,
-                Stock = stockcount,
-                Reserved = 0 // default of DB is 0 anyway, but still force sending it as best practice
+                Description = productDTO.Description,
+                Name = productDTO.Name,
+                Stock = productDTO.Stock,
+                Reserved = productDTO.Reserved // default of DB is 0 anyway, but still force sending it as best practice
             };
 
+            // Issue #10 here
             ValidateProduct(product);
 
             //  Check doesn’t already exist
-            var doesExist = await DoesProductExist(name, description);
+            var doesExist = await DoesProductExist(productDTO.Name, productDTO.Description);
             if (doesExist != 0)
             {
                 throw new Exception("Product with that name already exists, ID: " + doesExist.ToString());
@@ -44,15 +54,18 @@ public class TerryTrainingService : ITerryTrainingService
             // done in ProductValidator
 
             //  Check stockCount > 0
-            if (stockcount == 0)
+            if (productDTO.Stock == 0)
             {
                 throw new Exception("Product stockcount but be bigger then 0");
             }
 
 
 
-            await _context.Product.AddAsync(product);
-            await _context.SaveChangesAsync();
+            // await _context.Product.AddAsync(product);
+            // await _context.SaveChangesAsync();
+            
+            await _unitOfWork.Products.NewProduct(product);
+            await _unitOfWork.CompleteAsync();
             Console.WriteLine("Successfully added product");
 
             return new ProductDTO
@@ -73,7 +86,17 @@ public class TerryTrainingService : ITerryTrainingService
 
     public async Task<ProductDTO> GetProduct(int id)
     {
-        var result = await _context.Product.FirstAsync(product => product.Id == id);
+        // var result = await _context.Product.FirstAsync(product => product.Id == id);
+        // return new ProductDTO
+        // {
+        //     Id = result.Id,
+        //     Description = result.Description,
+        //     Name = result.Name,
+        //     Stock = result.Stock,
+        //     Reserved = result.Reserved
+        // };
+
+        var result = await _unitOfWork.Products.GetProduct(id);
         return new ProductDTO
         {
             Id = result.Id,
@@ -85,7 +108,7 @@ public class TerryTrainingService : ITerryTrainingService
     }
 
     /// <summary>
-    /// Checks if a Product already exists matching the name and description. If a match is ofund returns the Product ID,
+    /// Checks if a Product already exists matching the name and description. If a match is found returns the Product ID,
     /// else returns 0
     /// </summary>
     /// <param name="name">The name of the product to check if it exists</param>
@@ -94,10 +117,7 @@ public class TerryTrainingService : ITerryTrainingService
     private async Task<int> DoesProductExist(string name, string description)
     {
         // Find the product by its name and return the ID or 0 if it doesn't exist
-        return await _context.Product
-            .Where(product => product.Name == name && product.Description == description)
-            .Select(product => product.Id) // get only ID column
-            .FirstOrDefaultAsync(); // return ID, or 0 (as 0 is default for int)
+        return await _unitOfWork.Products.DoesProductExist(name, description);
     }
 
 
