@@ -58,6 +58,11 @@ public class ProductRepository: RepositoryBase<Product>, IProductRepository
         return await _dbContext.Product.FirstAsync(product => product.Id == id);
     }
 
+    public Task<Product> AddStock(Product product)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// Checks if a Product already exists matching the name and description. If a match is ofund returns the Product ID,
     /// else returns 0

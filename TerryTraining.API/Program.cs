@@ -92,6 +92,25 @@ app.MapPut("/product/new", async (string name, string description, int stockcoun
         Summary = "Create a new product",
         Description = "Creates a new product, if it does not exist",
     });
+app.MapPut("/product/{productid}/stock", async (int productid, int stockcount, ITerryTrainingService terryTrainingService) =>
+    {
+        // create ProductDTO here to send to NewProduct
+        var product = new ProductDTO
+            {
+                Id = productid,
+                Stock = stockcount,
+            };
+        
+        var result = terryTrainingService.AddStock(product);
+         return result == null ? Results.NotFound() : Results.Created($"/product/{result.Id}", result);
+    })
+    .WithName("AddStock")
+    .WithTags("Not Implemented")
+    .WithOpenApi(x => new OpenApiOperation(x)
+    {
+        Summary = "Adds stock to a product",
+        Description = "Adds stock to a product with provided Id",
+    });
 
 app.MapGet("/product/{id}", async (int id, ITerryTrainingService terryTrainingService) =>
     {

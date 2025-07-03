@@ -8,4 +8,6 @@ public interface IProductRepository: IRepositoryBase<Product>
     public Task<Product> NewProduct(Product product);
     public Task<Product> GetProduct(int id);
     public Task<int> DoesProductExist(string name, string description);
+    
+    public Task<Product> AddStock(Product product);
 }

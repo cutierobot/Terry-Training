@@ -15,6 +15,8 @@ public interface ITerryTrainingService
     // add the other method definitions here
     
     Task<ProductDTO> GetProduct(int id);
+    
+    Task<ProductDTO> AddStock(ProductDTO product);
     // ----------------------------------------------------------------------------------------------------------------
-    void ValidateProduct(Product product); // FluentValidation
+    void ValidateProduct(ProductDTO product); // FluentValidation
 }

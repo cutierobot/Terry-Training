@@ -1,13 +1,12 @@
 using FluentValidation;
 using TerryTraining.Application.DTO;
-using TerryTraining.Persistence.Models;
 
 namespace TerryTraining.API.Validation;
 
 // Medium article I followed for validation
 // https://medium.com/@lucas.and227/fluent-validation-with-net-core-da0d9da73c8a
 
-public class ProductValidator: AbstractValidator<Product>
+public class ProductValidator: AbstractValidator<ProductDTO>
 {
     public ProductValidator()
     {

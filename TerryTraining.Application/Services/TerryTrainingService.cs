@@ -15,11 +15,11 @@ public class TerryTrainingService : ITerryTrainingService
     // need to implement IUnitOfWork here now.
     // private readonly TerryDbContext _context;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<Product> _productValidator;
+    private readonly IValidator<ProductDTO> _productValidator;
     // private ITerryTrainingService _terryTrainingServiceImplementation;
 
     // public TerryTrainingService(TerryDbContext context, IValidator<Product> productValidator)
-    public TerryTrainingService(IUnitOfWork unitOfWork, IValidator<Product> productValidator)
+    public TerryTrainingService(IUnitOfWork unitOfWork, IValidator<ProductDTO> productValidator)
     {
         // _context = context;
         _unitOfWork = unitOfWork;
@@ -41,7 +41,7 @@ public class TerryTrainingService : ITerryTrainingService
             };
 
             // Issue #10 here
-            ValidateProduct(product);
+            ValidateProduct(productDTO);
 
             //  Check doesn’t already exist
             var doesExist = await DoesProductExist(productDTO.Name, productDTO.Description);
@@ -107,6 +107,11 @@ public class TerryTrainingService : ITerryTrainingService
         };
     }
 
+    public Task<ProductDTO> AddStock(ProductDTO product)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// Checks if a Product already exists matching the name and description. If a match is found returns the Product ID,
     /// else returns 0
@@ -127,7 +132,7 @@ public class TerryTrainingService : ITerryTrainingService
     /// </summary>
     /// <param name="product">The name of the product to check if it exists</param>
     /// <returns>boolean of if ProductDTO is valid or not</returns>
-    public void ValidateProduct(Product product)
+    public void ValidateProduct(ProductDTO product)
     {
         // return _productValidator.Validate(product).IsValid;
         var results = _productValidator.Validate(product);
