@@ -81,7 +81,7 @@ app.MapPut("/product/new", async (string name, string description, int stockcoun
                 Stock = stockcount,
                 Reserved = 0 // default of DB is 0 anyway, but still force sending it as best practice
             };
-        //TODO: rename productService to productService
+        
         var result = await productService.NewProduct(product);
         
          return result == null ? Results.NotFound() : Results.Created($"/product/{result.Value.Id}", result);
