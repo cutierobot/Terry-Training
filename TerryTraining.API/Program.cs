@@ -43,7 +43,7 @@ builder.Services.AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
     .AddValidatorsFromAssemblyContaining<ProductValidator>();
 
-builder.Services.AddScoped<ITerryTrainingService, TerryTrainingService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -59,7 +59,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// app.MapGet("/quote/find{text}", async (string text, ITerryTrainingService terryTrainingService) =>
+// app.MapGet("/quote/find{text}", async (string text, IProductService productService) =>
 //     {
 //         throw new NotImplementedException();
 //     })
@@ -71,7 +71,7 @@ app.UseHttpsRedirection();
 //         Description = "Retrieves a array of quotes matching provided text"
 //     });
 
-app.MapPut("/product/new", async (string name, string description, int stockcount, ITerryTrainingService terryTrainingService) =>
+app.MapPut("/product/new", async (string name, string description, int stockcount, IProductService productService) =>
     {
         // create ProductDTO here to send to NewProduct
         var product = new ProductDTO
@@ -81,9 +81,10 @@ app.MapPut("/product/new", async (string name, string description, int stockcoun
                 Stock = stockcount,
                 Reserved = 0 // default of DB is 0 anyway, but still force sending it as best practice
             };
+        //TODO: rename productService to productService
+        var result = await productService.NewProduct(product);
         
-        var result = terryTrainingService.NewProduct(product);
-         return result == null ? Results.NotFound() : Results.Created($"/product/{result.Id}", result);
+         return result == null ? Results.NotFound() : Results.Created($"/product/{result.Value.Id}", result);
     })
     .WithName("NewProduct")
     // .WithTags("Not Implemented")
@@ -92,7 +93,8 @@ app.MapPut("/product/new", async (string name, string description, int stockcoun
         Summary = "Create a new product",
         Description = "Creates a new product, if it does not exist",
     });
-app.MapPut("/product/{productid}/stock", async (int productid, int stockcount, ITerryTrainingService terryTrainingService) =>
+
+app.MapPut("/product/{productid}/stock", async (int productid, int stockcount, IProductService productService) =>
     {
         // create ProductDTO here to send to NewProduct
         var product = new ProductDTO
@@ -101,7 +103,7 @@ app.MapPut("/product/{productid}/stock", async (int productid, int stockcount, I
                 Stock = stockcount,
             };
         
-        var result = terryTrainingService.AddStock(product);
+        var result = productService.AddStock(product);
          return result == null ? Results.NotFound() : Results.Created($"/product/{result.Id}", result);
     })
     .WithName("AddStock")
@@ -112,9 +114,9 @@ app.MapPut("/product/{productid}/stock", async (int productid, int stockcount, I
         Description = "Adds stock to a product with provided Id",
     });
 
-app.MapGet("/product/{id}", async (int id, ITerryTrainingService terryTrainingService) =>
+app.MapGet("/product/{id}", async (int id, IProductService productService) =>
     {
-        var result = await terryTrainingService.GetProduct(id);
+        var result = await productService.GetProduct(id);
         return result == null ? Results.NotFound(): Results.Ok(result);
     })
     .WithName("GetProduct")

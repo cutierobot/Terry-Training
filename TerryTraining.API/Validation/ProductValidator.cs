@@ -18,5 +18,9 @@ public class ProductValidator: AbstractValidator<ProductDTO>
         RuleFor(product => product.Description)
             .MaximumLength(2000)
             .WithMessage("Description can not be bigger then 2,000 characters.");
+        
+        RuleFor(product => product.Stock)
+            .GreaterThan(0)
+            .WithMessage("stockcount must be greater than 0");
     }
 }

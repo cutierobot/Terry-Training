@@ -40,8 +40,18 @@ public class ProductRepository: RepositoryBase<Product>, IProductRepository
     {
         // throw new NotImplementedException();
         // should I move the service stuff here
-        await _dbContext.Product.AddAsync(product);
-        // await _dbContext.SaveChangesAsync();
+
+        // TODO: this is temp until have AutoMapper
+        var modelProduct = new Models.Product
+        {
+            Name = product.Name,
+            Description = product.Description,
+            Stock = product.Stock,
+            Reserved = product.Reserved
+        };
+        
+        await _dbContext.Product.AddAsync(modelProduct);
+        // await _dbContext.Product.AddAsync(product);
         return product;
     }
     
@@ -52,10 +62,29 @@ public class ProductRepository: RepositoryBase<Product>, IProductRepository
     //         .FirstOrDefaultAsync(u => u.Id == id);
     // }
 
-    public async Task<Product> GetProduct(int id)
+    public async Task<Product?> GetProduct(int id)
     {
         // throw new NotImplementedException();
-        return await _dbContext.Product.FirstAsync(product => product.Id == id);
+        
+        var modelProduct = await _dbContext.Product.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (modelProduct != null)
+        {
+            var product = new Domain.Entities.Product
+            {
+                Name = modelProduct.Name,
+                Description = modelProduct.Description,
+                Stock = modelProduct.Stock,
+                Reserved = modelProduct.Reserved
+            };
+
+            return product;
+        }
+
+        return null;
+        
+        //TODO: use new Result class here, don't want to manually handle nulls, messy and yucky
+
+        // return await _dbContext.Product.FirstAsync(product => product.Id == id);
     }
 
     public Task<Product> AddStock(Product product)

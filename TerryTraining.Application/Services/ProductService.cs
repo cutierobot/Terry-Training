@@ -1,3 +1,4 @@
+using Common;
 using FluentValidation;
 using TerryTraining.Application.DTO;
 using TerryTraining.Application.Interfaces;
@@ -10,16 +11,16 @@ namespace TerryTraining.Application.Services;
 
 // service should only get DTO and send back DTO
 
-public class TerryTrainingService : ITerryTrainingService
+public class ProductService : IProductService
 {
     // need to implement IUnitOfWork here now.
     // private readonly TerryDbContext _context;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<ProductDTO> _productValidator;
-    // private ITerryTrainingService _terryTrainingServiceImplementation;
+    // private IProductService _terryTrainingServiceImplementation;
 
-    // public TerryTrainingService(TerryDbContext context, IValidator<Product> productValidator)
-    public TerryTrainingService(IUnitOfWork unitOfWork, IValidator<ProductDTO> productValidator)
+    // public ProductService(TerryDbContext context, IValidator<Product> productValidator)
+    public ProductService(IUnitOfWork unitOfWork, IValidator<ProductDTO> productValidator)
     {
         // _context = context;
         _unitOfWork = unitOfWork;
@@ -27,7 +28,7 @@ public class TerryTrainingService : ITerryTrainingService
     }
 
     // public async Task<ProductDTO> NewProduct(string name, string description, int stockcount)
-    public async Task<ProductDTO> NewProduct(ProductDTO productDTO)
+    public async Task<Result<ProductDTO>> NewProduct(ProductDTO productDTO)
     {
         try
         {
@@ -41,26 +42,19 @@ public class TerryTrainingService : ITerryTrainingService
             };
 
             // Issue #10 here
-            ValidateProduct(productDTO);
-
+            var result = ValidateProduct(productDTO);
+            if (result.IsFailure)
+            {
+                return (Result<ProductDTO>)Result.Failure(result.Error);
+            }
+            
             //  Check doesn’t already exist
             var doesExist = await DoesProductExist(productDTO.Name, productDTO.Description);
             if (doesExist != 0)
             {
-                throw new Exception("Product with that name already exists, ID: " + doesExist.ToString());
+                return Result.Failure<ProductDTO>(new Error(ErrorCodes.DuplicateError,"Product with that name already exists"));
             }
-            // This should probably all be done with FluentValidation????
-            //  Check name, description sizes
-            // done in ProductValidator
-
-            //  Check stockCount > 0
-            if (productDTO.Stock == 0)
-            {
-                throw new Exception("Product stockcount but be bigger then 0");
-            }
-
-
-
+            
             // await _context.Product.AddAsync(product);
             // await _context.SaveChangesAsync();
             
@@ -132,7 +126,7 @@ public class TerryTrainingService : ITerryTrainingService
     /// </summary>
     /// <param name="product">The name of the product to check if it exists</param>
     /// <returns>boolean of if ProductDTO is valid or not</returns>
-    public void ValidateProduct(ProductDTO product)
+    public Result ValidateProduct(ProductDTO product)
     {
         // return _productValidator.Validate(product).IsValid;
         var results = _productValidator.Validate(product);
@@ -150,9 +144,14 @@ public class TerryTrainingService : ITerryTrainingService
             }
         }
 
+        // return  errorsArray.Count <= 0;
+
+
         if (errorsArray.Count > 0)
         {
-            throw new Exception(string.Join("\n", errorsArray));
+            return Result.Failure(new Error(ErrorCodes.ValidationError, errorsArray.ToString()));
         }
+        
+        return Result.Success();
     }
 }
