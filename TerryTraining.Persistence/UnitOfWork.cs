@@ -13,7 +13,7 @@ public class UnitOfWork : IUnitOfWork
     // public UnitOfWork(TerryDbContext context, IProductRepository productRepository)
     public UnitOfWork(TerryDbContext context)
     {
-        //NOte: was originally haveing 2 contexts at same time
+        //Note: was originally having 2 contexts at same time
         _context = context;
         // Products = productRepository;
         Products = new ProductRepository(_context);

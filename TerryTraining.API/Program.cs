@@ -27,7 +27,8 @@ var builder = WebApplication.CreateBuilder(args);
  * TODO NEXT WEEK/WHERE IM UP DO
  *---------------------------
  * Start creating an writing code for Order Aggregate using knowledge of valueObject and Aggregates. Ask Terry
- * if should use record or base class
+ * if should use record or base class (Terry said record)
+ * 
  */
 
 // Add services to the container.

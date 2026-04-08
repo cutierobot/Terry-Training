@@ -103,6 +103,9 @@ public class ProductService : IProductService
 
     public Task<ProductDTO> AddStock(ProductDTO product)
     {
+        // Check exists
+        // Check amountAdded > 0
+
         throw new NotImplementedException();
     }
 
