@@ -11,8 +11,14 @@ public class OrderLine
     
     public float LineTotal => Quantity * UnitPrice;
 
-    internal OrderLine(int productId, string productName, int quantity, float unitPrice)
+    
+    // internal 
+    // allows creation of it inside this entity but not outside of it
+    
+    internal OrderLine(int productId, int quantity, float unitPrice)
     {
-        
+        ProductId = productId;
+        Quantity = quantity;
+        UnitPrice = unitPrice;
     }
 }

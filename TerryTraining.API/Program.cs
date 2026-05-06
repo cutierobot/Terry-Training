@@ -20,17 +20,16 @@ var builder = WebApplication.CreateBuilder(args);
  * Previously learnt about Aggreggates.
  * figured out Order and OrderLines are. A customer creates one single order, that order will have multiple
  * OrderLine's (one for each product in the Order)
- * Started on implementing OrderAggregate. Got very confused and overwhelmed. Not even sure how to say I got overwhelmed.
- * I think I need a better understanding of how aggregate root and entity child work. But also confused with the scope of the
- * repository and service. Think need to do more study on Aggregate. ValueObject should be record.
+ * Started on implementing OrderAggregate. Got distraicted witht eh PorudtId for newProdut not updating. that was a
+ * 4 hours sidetrack lol.
  *
  * 
  *
  *---------------------------
  * TODO NEXT WEEK/WHERE IM UP DO
  *---------------------------
- * Continue creating OrderAggregate. Do more research on Aggregates roots and child. See if FR has example of Aggregate in
- * it anywhere to get a better understanding of it.
+ * Continue creating OrderAggregate. Do more research on Aggregates roots and child. Following this https://code-maze.com/csharp-design-pattern-aggregate/
+ * Up to implementing behaviour.
  * 
  */
 
