@@ -5,7 +5,7 @@ namespace TerryTraining.Persistence.Models;
 public class Order
 {
     [Key]
-    public int Id { get; set; }
+    public int Id { get; set; } //PK
     public int CustomerId { get; set; } // FK
     public bool Completed { get; set; } 
     

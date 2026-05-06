@@ -43,6 +43,12 @@ public class TerryDbContext: DbContext
                     .WithMany(customer => customer.Orders)
                     .HasForeignKey(order => order.CustomerId);
                 
+                // Tells EF Core that the Id is a Identity and auto-assigns
+                // modelBuilder.Entity<Product>()
+                //     .Property(product => product.Id)
+                //     .ValueGeneratedOnAdd();
+                    // .UseIdentityColumn(seed: 1, increment: 1);
+                
                 modelBuilder.Entity<Product>()
                     .HasKey(product => product.Id)
                     .HasName("PK_Product");

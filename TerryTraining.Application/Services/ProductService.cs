@@ -58,17 +58,19 @@ public class ProductService : IProductService
             // await _context.Product.AddAsync(product);
             // await _context.SaveChangesAsync();
             
-            await _unitOfWork.Products.NewProduct(product);
+            
+            var productOut = await _unitOfWork.Products.NewProduct(product);
             await _unitOfWork.CompleteAsync();
             Console.WriteLine("Successfully added product");
+            productOut.Id = await DoesProductExist(productOut.Name, productOut.Description);
 
             return new ProductDTO
             {
-                Id = product.Id,
-                Description = product.Description,
-                Name = product.Name,
-                Stock = product.Stock,
-                Reserved = product.Reserved
+                Id = productOut.Id,
+                Description = productOut.Description,
+                Name = productOut.Name,
+                Stock = productOut.Stock,
+                Reserved = productOut.Reserved
             };
         }
         catch (Exception e)

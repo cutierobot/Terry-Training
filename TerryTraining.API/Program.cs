@@ -20,14 +20,17 @@ var builder = WebApplication.CreateBuilder(args);
  * Previously learnt about Aggreggates.
  * figured out Order and OrderLines are. A customer creates one single order, that order will have multiple
  * OrderLine's (one for each product in the Order)
- * Learned about ValueObjects. Basically a thing where they don't need to be unique as the data is unique enough. such as a address.
- * Can be created with either record of base class
+ * Started on implementing OrderAggregate. Got very confused and overwhelmed. Not even sure how to say I got overwhelmed.
+ * I think I need a better understanding of how aggregate root and entity child work. But also confused with the scope of the
+ * repository and service. Think need to do more study on Aggregate. ValueObject should be record.
+ *
+ * 
  *
  *---------------------------
  * TODO NEXT WEEK/WHERE IM UP DO
  *---------------------------
- * Start creating an writing code for Order Aggregate using knowledge of valueObject and Aggregates. Ask Terry
- * if should use record or base class (Terry said record)
+ * Continue creating OrderAggregate. Do more research on Aggregates roots and child. See if FR has example of Aggregate in
+ * it anywhere to get a better understanding of it.
  * 
  */
 
@@ -88,6 +91,8 @@ app.UseHttpsRedirection();
 //         Summary = "Find quotes matching provided text",
 //         Description = "Retrieves a array of quotes matching provided text"
 //     });
+
+// API --> service --> unitOfWOrk --> repository --> db queries
 
 app.MapPut("/product/new", async (string name, string description, int stockcount, IProductService productService) =>
     {

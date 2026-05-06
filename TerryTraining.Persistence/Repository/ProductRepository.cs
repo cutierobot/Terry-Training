@@ -36,6 +36,7 @@ public class ProductRepository: RepositoryBase<Product>, IProductRepository
     // }
 
     // public Task<Product> NewProduct(string name, string description, int stockcount)
+    // public async Task<Product> NewProduct(Product product)
     public async Task<Product> NewProduct(Product product)
     {
         // throw new NotImplementedException();
@@ -49,9 +50,18 @@ public class ProductRepository: RepositoryBase<Product>, IProductRepository
             Stock = product.Stock,
             Reserved = product.Reserved
         };
-        
+        Console.WriteLine(_dbContext.GetHashCode());
+
         await _dbContext.Product.AddAsync(modelProduct);
+        
+        // await _dbContext.SaveChangesAsync(); // adding this here does fix the id problem, but this is not the way it's against DDD pretty sure. wonder if Terry can figure it out.
+        Console.WriteLine("modelProduct");
+        Console.WriteLine(modelProduct.Id);
         // await _dbContext.Product.AddAsync(product);
+        
+        // Return the domain entity, but we will update its ID after SaveChanges
+        // product.Id = modelProduct.Id;
+        // id is not being updated as not using Mapper
         return product;
     }
     
