@@ -17,8 +17,44 @@ public class OrderLine
     
     internal OrderLine(int productId, int quantity, float unitPrice)
     {
+        
+        // check product exists
+        // qunatity is bigger then 0
+
+        // Terry how do i call GetProducts here that returns null if prduct does not exist, i need ProductService but not
+        // sure how to add it here help
+        if (productId == 0)
+        {
+            throw new ArgumentException("productId must be at least one.", nameof(productId));
+        }
+
+        if (quantity == 0)
+        {
+            throw new ArgumentException("Quantity must be at least one.", nameof(quantity));
+        }
+        
+        if (unitPrice == 0)
+        {
+            throw new ArgumentException("unitPrice must be at least one.", nameof(unitPrice));
+        }
+        
+        
         ProductId = productId;
         Quantity = quantity;
         UnitPrice = unitPrice;
+    }
+
+    internal void AddQuantity(int quantity)
+    {
+        this.Quantity += quantity;
+    }
+
+    internal void WithdrawQuantity(int quantity)
+    {
+        if (quantity >= this.Quantity)
+        {
+            throw new InvalidOperationException("Can't remove all units. Remove the entire item instead.");
+        }
+        this.Quantity -= quantity;
     }
 }

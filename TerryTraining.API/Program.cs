@@ -20,8 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
  * Previously learnt about Aggreggates.
  * figured out Order and OrderLines are. A customer creates one single order, that order will have multiple
  * OrderLine's (one for each product in the Order)
- * Started on implementing OrderAggregate. Got distraicted witht eh PorudtId for newProdut not updating. that was a
- * 4 hours sidetrack lol.
+ * Started on implementing OrderAggregate. made small progress with add auqnaity and add orderLIn. Got distracted with
+ * trying to replace AutoMapper. Manual approach, Mapperly, or Mapster are the replacements for AutoMapper.
  *
  * 
  *
@@ -29,7 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
  * TODO NEXT WEEK/WHERE IM UP DO
  *---------------------------
  * Continue creating OrderAggregate. Do more research on Aggregates roots and child. Following this https://code-maze.com/csharp-design-pattern-aggregate/
- * Up to implementing behaviour.
+ * Up to implementing behaviour. Did some already 
  * 
  */
 
