@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly TerryDbContext _context;
     public IProductRepository Products { get; private set; }
+    public IOrderRepository Orders { get; private set; }
 
     // public UnitOfWork(TerryDbContext context, IProductRepository productRepository)
     public UnitOfWork(TerryDbContext context)
@@ -17,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         // Products = productRepository;
         Products = new ProductRepository(_context);
+        Orders = new OrderRepository(_context);
     }
 
     public async Task<int> CompleteAsync()

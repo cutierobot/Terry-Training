@@ -7,6 +7,7 @@ using TerryTraining.API.Validation;
 using TerryTraining.Application.DTO;
 using TerryTraining.Application.Interfaces;
 using TerryTraining.Application.Services;
+using TerryTraining.Domain.Entities.OrderAggregate;
 using TerryTraining.Domain.Interfaces;
 using TerryTraining.Persistence;
 using TerryTraining.Persistence.Repository;
@@ -17,19 +18,21 @@ var builder = WebApplication.CreateBuilder(args);
  *---------------------------
  * TODO/WHAT I DID LAST TIME
  *---------------------------
- * Previously learnt about Aggreggates.
- * figured out Order and OrderLines are. A customer creates one single order, that order will have multiple
- * OrderLine's (one for each product in the Order)
- * Started on implementing OrderAggregate. made small progress with add quantity and add orderLine. Got distracted with
+ * 95% sure finished the OrderAggregate part just need to finish off the OrderRepository and add the call to the Program.cs
+ * file. Apparently it doens't need to be in a OrderService because it a aggregate.
  * trying to replace AutoMapper. Manual approach, Mapperly, or Mapster are the replacements for AutoMapper.
+ * 
  *
  * 
  *
  *---------------------------
  * TODO NEXT WEEK/WHERE IM UP DO
  *---------------------------
- * Continue creating OrderAggregate. Do more research on Aggregates roots and child. Following this https://code-maze.com/csharp-design-pattern-aggregate/
- * Up to implementing behaviour. Did some already 
+ * Following this https://code-maze.com/csharp-design-pattern-aggregate/
+ * Up to creating the OrderReposityr and adding it to the Program.cs file. bit unsure about the OrderDTO part and where
+ * it fits in all of this. This also might be a good time to break off and focus on implementing our own AutoMapper or
+ * potentially utalise one of the other approaches such as Mapperly or Mapster.
+ * 
  * 
  */
 
@@ -65,6 +68,7 @@ builder.Services.AddFluentValidationAutoValidation()
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
@@ -152,7 +156,7 @@ app.MapPut("/customer/new", async (string givenName, string surname, string addr
 
 // CreateOrder(customerId, orderLines)
 // ask Terry about this one what orderLines is
-app.MapPut("/order/new", async (int customerId, List<OrderLineDTO> orderLines/*, IProductService productService*/) =>
+app.MapPut("/order/new", async (int customerId, List<OrderLineDTO> orderLines, IUnitOfWork unitOfWork) =>
     {
         // Products exist
         // Ensure customer exists
@@ -161,6 +165,7 @@ app.MapPut("/order/new", async (int customerId, List<OrderLineDTO> orderLines/*,
         
         // Call OrderRepository here, don't need OrderService as business logic is containe in the aggreggates. for non aggregate
         // the buisness logic is handled in the service.cs file
+        await unitOfWork.Orders.CreateOrder();
     })
     .WithName("CreateOrder")
     .WithTags("Not Implemented")
