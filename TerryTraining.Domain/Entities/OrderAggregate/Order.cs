@@ -25,9 +25,14 @@ public class Order
         Completed = false;
     }
 
-    public void AddOrderLine(int productId, int quantity, float unitPrice)
+    public void AddOrderLine(int productId, string productName, int quantity, float unitPrice)
     {
-        _products.Add(new OrderLine(productId, quantity, unitPrice));
+        if (_products.Count > 0 &  _products.Any(orderLine => orderLine.UnitPrice == 0))
+        {
+            throw new InvalidOperationException("Order already contains a product for free");
+        }
+        
+        _products.Add(new OrderLine(productId, productName, quantity, unitPrice));
     }
 
     public void RemoveOrderLine(int productId)
@@ -35,9 +40,25 @@ public class Order
         _products.RemoveAll(x => x.ProductId == productId);
     }
 
-    public void AddQuantity(int productId, int quantity)
+    public void AddProductQuantity(int productId, int quantity)
     {
         // _items.FirstOrDefault(x => x.ItemName.Equals(itemName))?.AddQuantity(quantity);
         _products.FirstOrDefault(orderLine => orderLine.ProductId.Equals(productId))?.AddQuantity(quantity);
     }
+
+    public void RemoveProductQuantity(int productId, int quantity)
+    {
+        _products.FirstOrDefault(orderLine => orderLine.ProductId.Equals((productId)))?.UpdateQuantity(quantity);
+    }
+
+    public void AddUpdateProductUnitPrice(int productId, float unitPrice)
+    {
+        _products.FirstOrDefault(orderLine => orderLine.ProductId.Equals(productId))?.UpdateUnitPrice(unitPrice);
+    }
+
+    public void MarkOrderAsCompleted()
+    {
+        this.Completed = true;
+    }
+    
 }

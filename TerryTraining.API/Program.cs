@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
  * Previously learnt about Aggreggates.
  * figured out Order and OrderLines are. A customer creates one single order, that order will have multiple
  * OrderLine's (one for each product in the Order)
- * Started on implementing OrderAggregate. made small progress with add auqnaity and add orderLIn. Got distracted with
+ * Started on implementing OrderAggregate. made small progress with add quantity and add orderLine. Got distracted with
  * trying to replace AutoMapper. Manual approach, Mapperly, or Mapster are the replacements for AutoMapper.
  *
  * 
@@ -152,12 +152,15 @@ app.MapPut("/customer/new", async (string givenName, string surname, string addr
 
 // CreateOrder(customerId, orderLines)
 // ask Terry about this one what orderLines is
-app.MapPut("/order/new", async (int customerId/*, IProductService productService*/) =>
+app.MapPut("/order/new", async (int customerId, List<OrderLineDTO> orderLines/*, IProductService productService*/) =>
     {
         // Products exist
         // Ensure customer exists
         // Ensure stock available
         // Reserve stock
+        
+        // Call OrderRepository here, don't need OrderService as business logic is containe in the aggreggates. for non aggregate
+        // the buisness logic is handled in the service.cs file
     })
     .WithName("CreateOrder")
     .WithTags("Not Implemented")
